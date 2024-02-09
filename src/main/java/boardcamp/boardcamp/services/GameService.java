@@ -2,18 +2,16 @@ package boardcamp.boardcamp.services;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import boardcamp.boardcamp.dto.GameDTO;
 import boardcamp.boardcamp.exceptions.GameExceptions.GameConflictException;
+import boardcamp.boardcamp.exceptions.RentalExceptions.GameNotFoundException;
 import boardcamp.boardcamp.models.GameModel;
 import boardcamp.boardcamp.repositories.GameRepository;
-import jakarta.validation.Valid;
 
 @Service
 public class GameService {
@@ -35,5 +33,12 @@ public class GameService {
     
     GameModel game = new GameModel(body);
     return gameRepository.save(game);
+  }
+
+  public GameModel getGameById(Long id){
+    GameModel game = gameRepository.findById(id).orElseThrow(
+      () -> new GameNotFoundException("Game does not exists")
+    );
+    return game;
   }
 }

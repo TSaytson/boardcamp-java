@@ -24,7 +24,7 @@ public class CustomerService {
     return customerRepository.save(customer);
   }
 
-  public CustomerModel getCustomerById(long id) throws CustomerNotFoundException{
+  public CustomerModel getCustomerById(Long id) throws CustomerNotFoundException{
     CustomerModel customer = customerRepository.findById(id).orElseThrow(
       () -> new CustomerNotFoundException("Customer does not exists")
     );
