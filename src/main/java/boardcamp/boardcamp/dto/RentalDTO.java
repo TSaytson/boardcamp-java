@@ -2,7 +2,9 @@ package boardcamp.boardcamp.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.Data;
 
+@Data
 public class RentalDTO {
 
   @NotNull(message = "Rental must be associated to a customer")

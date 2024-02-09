@@ -1,12 +1,10 @@
 package boardcamp.boardcamp.services;
 
-import java.io.FileNotFoundException;
-import java.util.Optional;
-
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import boardcamp.boardcamp.dto.CustomerDTO;
+import boardcamp.boardcamp.exceptions.CustomerExceptions.CustomerConflictException;
+import boardcamp.boardcamp.exceptions.CustomerExceptions.CustomerNotFoundException;
 import boardcamp.boardcamp.models.CustomerModel;
 import boardcamp.boardcamp.repositories.CustomerRepository;
 
@@ -18,19 +16,19 @@ public class CustomerService {
     this.customerRepository = customerRepository;
   }
 
-  public CustomerModel create(CustomerDTO body){
-    if (customerRepository.existsByCpf(body.getCpf())){
-      throw new DuplicateKeyException("Customer already exists");
-    }
+  public CustomerModel create(CustomerDTO body) throws CustomerConflictException{
+    if (customerRepository.existsByCpf(body.getCpf()))
+      throw new CustomerConflictException("Customer already exists");
+    
     CustomerModel customer = new CustomerModel(body);
     return customerRepository.save(customer);
   }
 
-  public CustomerModel getCustomerById(long id) throws FileNotFoundException{
-    Optional<CustomerModel> customer = customerRepository.findById(id);
-    if (!customer.isPresent()){
-      throw new FileNotFoundException("Customer doest not exists");
-    }
-    return customer.get();
+  public CustomerModel getCustomerById(long id) throws CustomerNotFoundException{
+    CustomerModel customer = customerRepository.findById(id).orElseThrow(
+      () -> new CustomerNotFoundException("Customer does not exists")
+    );
+
+    return customer;
   }
 }
