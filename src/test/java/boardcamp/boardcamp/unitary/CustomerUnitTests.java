@@ -1,13 +1,10 @@
-package boardcamp.boardcamp;
+package boardcamp.boardcamp.unitary;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -47,8 +44,24 @@ public class CustomerUnitTests {
     assertNotNull(exception);
     assertEquals("Customer already exists", exception.getMessage());
   }
+
   @Test
-  void givenWrongCustomerId_whenFindingCustomerById_thenThrowsError(){
+  void givenUniqueCustomer_whenCreatingCustomer_thenReturnCreatedCustomer(){
+    CustomerDTO customerDTO = new CustomerDTO("name", "cpf");
+    CustomerModel customerModel = new CustomerModel(customerDTO);
+    doReturn(false).when(customerRepository).existsByCpf(any());
+    doReturn(customerModel).when(customerRepository).save(any());
+
+    CustomerModel newCustomer = customerService.create(customerDTO);
+
+    assertNotNull(newCustomer);
+    verify(customerRepository, times(1)).existsByCpf(any());
+    verify(customerRepository, times(1)).save(any());
+    assertEquals(customerModel, newCustomer);
+  }
+
+  @Test
+  void givenInvalidCustomerId_whenFindingCustomerById_thenThrowsError(){
     doReturn(false).when(customerRepository).existsById(any());
 
     CustomerNotFoundException exception = assertThrows(
@@ -60,7 +73,7 @@ public class CustomerUnitTests {
     assertEquals("Customer does not exists", exception.getMessage());
   }
   @Test
-  void givenValidCustomer_whenFindingCustomerById_thenReturnsCustomer(){
+  void givenValidCustomerId_whenFindingCustomerById_thenReturnsCustomer(){
     CustomerDTO customer = new CustomerDTO();
     CustomerModel newCustomer = new CustomerModel(customer);
 

@@ -21,7 +21,6 @@ public class CustomerService {
       throw new CustomerConflictException("Customer already exists");
     
     CustomerModel customer = new CustomerModel(body);
-    System.out.println(customer);
     return customerRepository.save(customer);
   }
 
