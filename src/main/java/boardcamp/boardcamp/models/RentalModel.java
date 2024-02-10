@@ -37,7 +37,7 @@ public class RentalModel {
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private long id;
 
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name="customer_id")
   private CustomerModel customer;
 

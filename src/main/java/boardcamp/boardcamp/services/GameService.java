@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import boardcamp.boardcamp.dto.GameDTO;
 import boardcamp.boardcamp.exceptions.GameExceptions.GameConflictException;
-import boardcamp.boardcamp.exceptions.RentalExceptions.GameNotFoundException;
+import boardcamp.boardcamp.exceptions.GameExceptions.GameNotFoundException;
 import boardcamp.boardcamp.models.GameModel;
 import boardcamp.boardcamp.repositories.GameRepository;
 

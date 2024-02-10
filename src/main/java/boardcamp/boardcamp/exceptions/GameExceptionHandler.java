@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import boardcamp.boardcamp.exceptions.GameExceptions.GameBadRequestException;
 import boardcamp.boardcamp.exceptions.GameExceptions.GameConflictException;
+import boardcamp.boardcamp.exceptions.GameExceptions.GameNotFoundException;
 
 @ControllerAdvice
 public class GameExceptionHandler {
@@ -19,5 +20,10 @@ public class GameExceptionHandler {
   @ExceptionHandler({GameConflictException.class})
   public ResponseEntity<String> handleGameConflict(GameConflictException e){
     return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+  }
+
+  @ExceptionHandler({GameNotFoundException.class})
+  public ResponseEntity<String> handleGameNotFound(GameNotFoundException e){
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
   }
 }
