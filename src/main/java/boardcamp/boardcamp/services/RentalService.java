@@ -52,7 +52,7 @@ public class RentalService {
       rental.setReturnDate(LocalDate.now());
     LocalDate dateToBeReturned = rental.getRentDate().plusDays(rental.getDaysRented());
     if (rental.getReturnDate().isAfter(dateToBeReturned)){
-      long daysDelayed = rental.getReturnDate().getDayOfMonth() - dateToBeReturned.getDayOfMonth();
+      long daysDelayed = rental.getReturnDate().getDayOfYear() - dateToBeReturned.getDayOfYear();
       rental.setDelayFee(daysDelayed*rental.getGame().getPricePerDay());
     }
     return rentalRepository.save(rental);
